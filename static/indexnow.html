@@ -1,0 +1,271 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Inventory Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-image: url("/static/army.webp");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      .backdrop {
+        backdrop-filter: blur(8px);
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-white p-6 flex items-center justify-center">
+    <div class="backdrop rounded-xl shadow-xl w-full max-w-3xl p-8">
+      <h1 class="text-4xl font-extrabold text-center text-cyan-400 mb-6">
+        🔍 AI Inventory Object Detection
+      </h1> -->
+
+      <!-- Upload Section -->
+      <!-- <label
+        for="uploadBtn"
+        class="cursor-pointer bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded text-center block w-full transition duration-300"
+      >
+        📤 Upload Image
+      </label>
+      <input
+        type="file"
+        id="uploadBtn"
+        accept="image/*"
+        class="hidden"
+      /> -->
+
+      <!-- Preview -->
+      <!-- <img
+        id="imagePreview"
+        class="hidden mt-4 border-2 border-cyan-400 rounded-xl w-full max-h-[400px] object-contain shadow-md"
+        alt="Uploaded Preview"
+      /> -->
+
+      <!-- Predict Button -->
+      <!-- <button
+        id="predictBtn"
+        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded-xl font-bold text-lg shadow-lg transition duration-300"
+      >
+        🚀 Detect Objects
+      </button> -->
+
+      <!-- Result Box -->
+      <!-- <div
+        id="results"
+        class="mt-6 p-4 bg-black/70 rounded text-sm text-green-300 whitespace-pre-wrap max-h-96 overflow-auto border border-green-400"
+      >
+        Detection results will appear here.
+      </div>
+    </div>
+
+    <script src="/static/demo.js"></script>
+  </body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Inventory System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-image: url("/static/army.webp");
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+      }
+
+      .glass {
+        backdrop-filter: blur(12px);
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #00bcd4;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body class="text-white flex items-center justify-center min-h-screen px-4">
+    <div id="authContainer" class="glass w-full max-w-md p-8 rounded-xl shadow-xl">
+      <!-- Login Form -->
+      <div id="loginPage">
+        <h2 class="text-3xl font-bold text-center text-cyan-300 mb-6">🔐 Login</h2>
+        <form id="loginForm">
+          <input type="text" id="loginUsername" placeholder="Username" required
+            class="w-full mb-4 px-4 py-3 rounded bg-gray-800 border border-cyan-500 focus:outline-none" />
+          <input type="password" id="loginPassword" placeholder="Password" required
+            class="w-full mb-6 px-4 py-3 rounded bg-gray-800 border border-cyan-500 focus:outline-none" />
+          <button type="submit"
+            class="w-full bg-cyan-600 hover:bg-cyan-700 px-4 py-3 rounded font-semibold shadow-md">Login</button>
+        </form>
+        <p class="mt-4 text-center text-sm text-gray-300">
+          Don't have an account?
+          <button onclick="showRegister()" class="text-cyan-400 hover:underline">Register</button>
+        </p>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerPage" class="hidden">
+        <h2 class="text-3xl font-bold text-center text-cyan-300 mb-6">📝 Register</h2>
+        <form id="registerForm">
+          <input type="text" id="registerUsername" placeholder="Username" required
+            class="w-full mb-4 px-4 py-3 rounded bg-gray-800 border border-cyan-500 focus:outline-none" />
+          <input type="password" id="registerPassword" placeholder="Password" required
+            class="w-full mb-6 px-4 py-3 rounded bg-gray-800 border border-cyan-500 focus:outline-none" />
+          <button type="submit"
+            class="w-full bg-cyan-600 hover:bg-cyan-700 px-4 py-3 rounded font-semibold shadow-md">Register</button>
+        </form>
+        <p class="mt-4 text-center text-sm text-gray-300">
+          Already have an account?
+          <button onclick="showLogin()" class="text-cyan-400 hover:underline">Login</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- Home Page (Object Detection) -->
+    <div id="homePage" class="glass w-full max-w-4xl p-8 rounded-xl shadow-2xl mx-auto hidden">
+      <h1 class="text-4xl font-extrabold text-center text-cyan-300 mb-8">📦 AI Inventory Detection</h1>
+
+      <label for="uploadBtn"
+        class="cursor-pointer bg-cyan-600 hover:bg-cyan-700 px-4 py-3 rounded text-center block w-full text-lg font-medium shadow-lg">
+        📤 Upload Image
+      </label>
+      <input type="file" id="uploadBtn" accept="image/*" class="hidden" />
+
+      <img id="imagePreview"
+        class="hidden mt-6 border-2 border-cyan-300 rounded-lg w-full max-h-[400px] object-contain shadow-md"
+        alt="Preview" />
+
+      <button id="predictBtn"
+        class="mt-6 w-full bg-purple-700 hover:bg-purple-800 px-4 py-3 rounded-lg text-lg font-bold shadow-lg">
+        🔍 Detect Objects
+      </button>
+
+      <div id="results"
+        class="mt-6 p-4 bg-black/70 rounded text-sm text-green-300 whitespace-pre-wrap max-h-96 overflow-auto border border-green-400 shadow-inner">
+        Detection results will appear here.
+      </div>
+    </div>
+
+    <!-- Full JavaScript Logic -->
+    <script>
+      const authContainer = document.getElementById("authContainer");
+      const loginPage = document.getElementById("loginPage");
+      const registerPage = document.getElementById("registerPage");
+      const homePage = document.getElementById("homePage");
+
+      function showLogin() {
+        registerPage.classList.add("hidden");
+        loginPage.classList.remove("hidden");
+      }
+
+      function showRegister() {
+        loginPage.classList.add("hidden");
+        registerPage.classList.remove("hidden");
+      }
+
+      // Login Submit
+      document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const username = document.getElementById("loginUsername").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const res = await fetch("http://127.0.0.1:8000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("✅ Login successful!");
+          localStorage.setItem("token", data.access_token);
+          authContainer.classList.add("hidden");
+          homePage.classList.remove("hidden");
+        } else {
+          alert(data.detail || "❌ Login failed.");
+        }
+      });
+
+      // Register Submit
+      document.getElementById("registerForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const username = document.getElementById("registerUsername").value;
+        const password = document.getElementById("registerPassword").value;
+
+        const res = await fetch("http://127.0.0.1:8000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("✅ Registration successful!");
+          showLogin();
+        } else {
+          alert(data.detail || "❌ Registration failed.");
+        }
+      });
+
+      // Object Detection Logic
+      const uploadBtn = document.getElementById("uploadBtn");
+      const imagePreview = document.getElementById("imagePreview");
+      const predictBtn = document.getElementById("predictBtn");
+      const resultsBox = document.getElementById("results");
+      let currentFile = null;
+
+      uploadBtn.addEventListener("change", () => {
+        const file = uploadBtn.files[0];
+        if (!file) return;
+        currentFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagePreview.src = e.target.result;
+          imagePreview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      });
+
+      predictBtn.addEventListener("click", async () => {
+        if (!currentFile) {
+          alert("Please upload an image first.");
+          return;
+        }
+        const formData = new FormData();
+        formData.append("file", currentFile);
+
+        try {
+          const res = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: formData,
+          });
+
+          const data = await res.json();
+          resultsBox.textContent = JSON.stringify(data.results || data, null, 2);
+        } catch (err) {
+          console.error(err);
+          resultsBox.textContent = "❌ Error connecting to backend.";
+        }
+      });
+    </script>
+  </body>
+</html>

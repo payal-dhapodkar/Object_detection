@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Inventory Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f172a, #1e293b);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+    input[type=file]::file-selector-button {
+      background-color: #14b8a6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      border: none;
+    }
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="text-white flex items-center justify-center min-h-screen relative">
+
+  <div class="w-full max-w-xl mx-auto px-6 py-8" id="authSection">
+    <div id="loginForm" class="glass p-8 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-center text-teal-300 mb-6">🔐 Login </h1>
+      <input id="loginUsername" type="text" placeholder="Username" class="w-full p-3 mb-4 rounded bg-white text-black">
+      <input id="loginPassword" type="password" placeholder="Password" class="w-full p-3 mb-4 rounded bg-white text-black">
+      <button onclick="loginUser()" class="w-full bg-teal-500 hover:bg-teal-600 py-2 rounded">Login</button>
+      <p class="mt-4 text-center text-sm">New user? <a href="#" class="text-teal-300 underline" onclick="toggleForms('register')">Register here</a></p>
+    </div>
+
+    <div id="registerForm" class="glass p-8 rounded-lg shadow-lg hidden">
+      <h1 class="text-3xl font-bold text-center text-teal-300 mb-6">📝 Register </h1>
+      <input id="regUsername" type="text" placeholder="Username" class="w-full p-3 mb-4 rounded bg-white text-black">
+      <input id="regPassword" type="password" placeholder="Password" class="w-full p-3 mb-4 rounded bg-white text-black">
+      <button onclick="registerUser()" class="w-full bg-teal-500 hover:bg-teal-600 py-2 rounded">Register</button>
+      <p class="mt-4 text-center text-sm">Already registered? <a href="#" class="text-teal-300 underline" onclick="toggleForms('login')">Login here</a></p>
+    </div>
+  </div>
+
+  <!-- Object Detection Section -->
+  <div id="homeSection" class="hidden w-full max-w-6xl mx-auto px-6 py-10">
+    <h2 class="text-4xl text-center font-bold text-white drop-shadow mb-10"> Object Detection Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> -->
+
+      <!-- updated -->
+        <!-- Webcam Section -->
+<hr class="my-4 border-gray-500">
+<h3 class="text-sm text-white mb-2">📸 Use Webcam</h3>
+<video id="video" class="w-full max-h-72 rounded border mb-2" autoplay></video>
+<canvas id="canvas" class="hidden"></canvas>
+<div class="flex gap-2">
+  <button id="startWebcam" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">🎥 Start Webcam</button>
+  <button id="captureBtn" class="bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded">📸 Capture</button>
+</div> -->
+
+      <!-- close updated  -->
+
+      <div class="glass p-6 rounded-xl shadow-xl relative">
+        <label class="block text-sm font-semibold mb-2">Upload an Image</label>
+        <input type="file" id="uploadBtn" accept="image/*" class="w-full mb-4">
+        <div class="relative w-full">
+          <img id="imagePreview" class="hidden mt-4 border rounded w-full max-h-96 object-contain bg-white" alt="Preview">
+          <canvas id="canvas" class="hidden"></canvas>
+        </div>
+        <button id="predictBtn" class="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded">
+          ▶ Detect Objects
+        </button>
+      </div>
+      <div class="glass p-6 rounded-xl shadow-xl overflow-auto max-h-[500px]">
+        <h2 class="text-lg font-semibold mb-4 text-white">📋 Detection Results</h2>
+        <pre id="results" class="text-sm text-green-300 whitespace-pre-wrap">Results will appear here...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authSection = document.getElementById('authSection');
+    const homeSection = document.getElementById('homeSection');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    function toggleForms(view) {
+      loginForm.classList.toggle('hidden', view !== 'login');
+      registerForm.classList.toggle('hidden', view !== 'register');
+    }
+
+    function showHome() {
+      authSection.classList.add('hidden');
+      homeSection.classList.remove('hidden');
+    }
+
+    async function registerUser() {
+      const username = document.getElementById('regUsername').value;
+      const password = document.getElementById('regPassword').value;
+      const res = await fetch('http://127.0.0.1:8000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      if (res.ok) {
+        alert('✅ Registered successfully! Please login.');
+        toggleForms('login');
+      } else {
+        alert('❌ Registration failed.');
+      }
+    }
+
+    async function loginUser() {
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+      const formData = new URLSearchParams();
+      formData.append('username', username);
+      formData.append('password', password);
+
+      const res = await fetch('http://127.0.0.1:8000/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('token', data.access_token);
+        showHome();
+      } else {
+        alert('❌ Invalid credentials');
+      }
+    }
+
+    const uploadBtn = document.getElementById("uploadBtn");
+    const imagePreview = document.getElementById("imagePreview");
+    const predictBtn = document.getElementById("predictBtn");
+    const resultsBox = document.getElementById("results");
+    const canvas = document.getElementById("canvas");
+    let currentFile = null;
+
+    function drawBoundingBoxes(image, detections) {
+      const ctx = canvas.getContext("2d");
+      canvas.width = image.clientWidth;
+      canvas.height = image.clientHeight;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      detections.forEach((d) => {
+        const [x1, y1, x2, y2] = d.bbox;
+        const scaleX = canvas.width / image.naturalWidth;
+        const scaleY = canvas.height / image.naturalHeight;
+
+        const x = x1 * scaleX;
+        const y = y1 * scaleY;
+        const width = (x2 - x1) * scaleX;
+        const height = (y2 - y1) * scaleY;
+
+        ctx.strokeStyle = "lime";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, height);
+
+        const label = `${d.class} (${(d.score * 100).toFixed(1)}%)`;
+        ctx.fillStyle = "rgba(0, 128, 0, 0.8)";
+        ctx.fillRect(x, y - 18, ctx.measureText(label).width + 10, 18);
+        ctx.fillStyle = "white";
+        ctx.font = "14px sans-serif";
+        ctx.fillText(label, x + 5, y - 5);
+      });
+    }
+
+    uploadBtn.addEventListener("change", () => {
+      const file = uploadBtn.files[0];
+      if (!file) return;
+      currentFile = file;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imagePreview.src = e.target.result;
+        imagePreview.classList.remove("hidden");
+        canvas.classList.remove("hidden");
+      };
+      reader.readAsDataURL(file);
+    });
+
+    predictBtn.addEventListener("click", async () => {
+      if (!currentFile) {
+        alert("Please upload an image first.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", currentFile);
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/predict", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        resultsBox.innerHTML = "";
+
+        if (!data.results || data.results.length === 0) {
+          resultsBox.innerHTML = "<span class='text-red-400'>No objects detected.</span>";
+          return;
+        }
+
+        drawBoundingBoxes(imagePreview, data.results);
+
+        data.results.forEach((result) => {
+          resultsBox.innerHTML += `
+            <div class="mb-4 border-b border-gray-600 pb-2">
+              <strong class="text-lg text-white">🔹 ${result.class}</strong><br>
+              <span class="text-sm text-green-300">Confidence:</span> ${(result.score * 100).toFixed(2)}%<br>
+              <span class="text-sm text-blue-300">📦 Description:</span> ${result.description || "N/A"}<br>
+              <span class="text-sm text-yellow-300">⚙️ Use:</span> ${result.use || "N/A"}<br>
+              <span class="text-sm text-purple-300">💰 Price:</span> ${result.price || "N/A"}<br>
+              <span class="text-sm text-pink-300">📍 Location:</span> ${result.location || "N/A"}<br>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error(err);
+        resultsBox.innerHTML = "<span class='text-red-400'>❌ Error connecting to backend.</span>";
+      }
+    });
+
+    window.onload = () => toggleForms('login');
+    // Webcam functionality
+// const video = document.getElementById("video");
+// const canvas = document.getElementById("canvas");
+// const startWebcam = document.getElementById("startWebcam");
+// const captureBtn = document.getElementById("captureBtn");
+
+// startWebcam.addEventListener("click", async () => {
+//   try {
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//     video.srcObject = stream;
+//     video.play();
+//   } catch (err) {
+//     alert("❌ Webcam access denied or not available.");
+//   }
+// });
+
+// captureBtn.addEventListener("click", async () => {
+//   if (!video.srcObject) {
+//     alert("❗ Start the webcam first.");
+//     return;
+//   }
+
+//   canvas.width = video.videoWidth;
+//   canvas.height = video.videoHeight;
+//   const ctx = canvas.getContext("2d");
+//   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+//   canvas.toBlob(async (blob) => {
+//     const formData = new FormData();
+//     formData.append("file", blob, "capture.jpg");
+
+//     try {
+//       const res = await fetch("http://127.0.0.1:8000/predict", {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("token")}`
+//         },
+//         body: formData
+//       });
+//       const data = await res.json();
+//       resultsBox.textContent = JSON.stringify(data.results || data, null, 2);
+//     } catch (err) {
+//       console.error("Prediction error:", err);
+//       resultsBox.textContent = "❌ Error connecting to backend.";
+//     }
+//   }, "image/jpeg");
+// });
+// updated
+
+// close updated
+  </script>
+  
+</body>
+</html>

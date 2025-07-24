@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/static/id.css">
+  <title>Login</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form method="post" action="/token">
+      <input name="username" type="text" placeholder="Email" required />
+      <input name="password" type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register here</a></p>
+  </div>
+  <!-- home -->
+    <div class="header">Object Detection Dashboard</div>
+  <div class="home-container">
+    <input type="file" id="imageUpload" accept="image/*" />
+    <button onclick="uploadImage()">Detect Object</button>
+    <div id="uploadPreview"></div>
+    <pre id="result" style="text-align: left;"></pre>
+  </div>
+   <script src="/static/demo.js"></script>
+</body>
+</html>

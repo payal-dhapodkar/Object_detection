@@ -1,0 +1,1172 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+    <style>
+        .detection-box {
+            position: absolute;
+            border: 2px solid #00FF00;
+            background-color: rgba(0, 255, 0, 0.1);
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 1px black;
+            pointer-events: none;
+        }
+        #video {
+            transform: scaleX(-1); /* Mirror for webcam */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-6 text-center">Object Detection Scanner</h1>
+        
+        <div class="flex flex-col md:flex-row gap-6">
+            Left Panel
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg flex-1">
+                <div class="flex gap-4 mb-4">
+                    <button id="webcamBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex-1">
+                        Start Webcam
+                    </button>
+                    <button id="uploadBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex-1">
+                        Upload Image
+                    </button>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                </div>
+                
+                <div class="relative">
+                    <video id="video" width="640" height="480" autoplay muted playsinline class="hidden w-full border-2 border-gray-600 rounded"></video>
+                    <canvas id="canvas" width="640" height="480" class="w-full border-2 border-gray-600 rounded"></canvas>
+                    <img id="imagePreview" class="hidden w-full border-2 border-gray-600 rounded">
+                </div>
+                
+                <div class="mt-4 flex gap-4">
+                    <button id="detectBtn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded flex-1">
+                        Detect Objects
+                    </button>
+                    <button id="stopBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex-1">
+                        Stop Detection
+                    </button>
+                </div>
+            </div>
+            
+            Right Panel
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg w-full md:w-80">
+                <h2 class="text-xl font-bold mb-4">Detection Results</h2>
+                <div id="results" class="space-y-2 max-h-96 overflow-y-auto"></div>
+                <div class="mt-4">
+                    <h3 class="font-bold mb-2">Model Information</h3>
+                    <div id="modelInfo" class="text-sm text-gray-300">
+                        Loading COCO-SSD model...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script>
+        // DOM Elements
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const imagePreview = document.getElementById('imagePreview');
+        const resultsDiv = document.getElementById('results');
+        const modelInfoDiv = document.getElementById('modelInfo');
+        const fileInput = document.getElementById('fileInput');
+        
+        // State variables
+        let model = null;
+        let isDetecting = false;
+        let detectionInterval = null;
+        
+        // Initialize the model
+        async function loadModel() {
+            try {
+                modelInfoDiv.textContent = "Loading COCO-SSD model...";
+                model = await cocoSsd.load();
+                modelInfoDiv.textContent = `Model loaded! (${model.modelName})`;
+                console.log("Model loaded successfully");
+            } catch (err) {
+                modelInfoDiv.textContent = "Failed to load model";
+                console.error("Model loading error:", err);
+            }
+        }
+        
+        // Start webcam
+        async function startWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 640, 
+                        height: 480,
+                        facingMode: 'environment' 
+                    } 
+                });
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                imagePreview.classList.add('hidden');
+                canvas.classList.add('hidden');
+                
+                // Wait for video to be ready
+                video.onloadedmetadata = () => {
+                    video.play();
+                };
+            } catch (err) {
+                console.error("Webcam error:", err);
+                alert("Could not access the webcam. Please check permissions.");
+            }
+        }
+        
+        // Stop webcam
+        function stopWebcam() {
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.classList.add('hidden');
+            }
+        }
+        
+        // Detect objects in image/video
+        async function detectObjects() {
+            if (!model) {
+                alert("Model is still loading. Please wait...");
+                return;
+            }
+            
+            isDetecting = true;
+            resultsDiv.innerHTML = '';
+            
+            // Clear previous detections
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            let imageElement;
+            if (!video.classList.contains('hidden')) {
+                imageElement = video;
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            } else {
+                imageElement = imagePreview;
+                canvas.width = imagePreview.width;
+                canvas.height = imagePreview.height;
+            }
+            
+            // Draw the image to canvas
+            ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+            canvas.classList.remove('hidden');
+            
+            // Perform detection
+            const predictions = await model.detect(canvas);
+            
+            // Display results
+            displayResults(predictions);
+            drawBoxes(predictions);
+            
+            isDetecting = false;
+        } -->
+        
+        <!-- // Display detection results
+        // function displayResults(predictions) {
+        //     resultsDiv.innerHTML = ''; -->
+
+
+            <!-- // commented
+            
+//            if (predictions.length === 0) {
+//     resultsDiv.innerHTML = '<div class="text-gray-400">No objects detected</div>';
+//     modelInfoDiv.textContent = 'No object info available.';
+//     return;
+// }
+
+// predictions.forEach(prediction => {
+//     const className = prediction.class;
+//     const info = objectInfo[className];
+
+//     const resultItem = document.createElement('div');
+//     resultItem.className = 'bg-gray-700 p-2 rounded';
+//     resultItem.innerHTML = `
+//         <div class="flex justify-between">
+//             <span class="font-bold">${className}</span>
+//             <span>${Math.round(prediction.score * 100)}%</span>
+//         </div>
+//         <div class="text-xs text-gray-400">
+//             Bounding box: [${prediction.bbox.map(Math.round).join(', ')}]
+//         </div>
+//         ${info ? `
+//             <div class="mt-2 text-sm text-gray-300">
+//                 <strong>Description:</strong> ${info.description}<br>
+//                 <strong>Use:</strong> ${info.use}
+//             </div>` : '<div class="text-sm text-gray-400">No additional info.</div>'}
+//     `;
+
+//     resultsDiv.appendChild(resultItem);
+// });
+
+// // Optionally update model info section with first prediction's metadata
+// const first = predictions[0];
+// const firstInfo = objectInfo[first.class];
+// modelInfoDiv.innerHTML = firstInfo ? `
+//     <strong>Detected Object:</strong> ${first.class}<br>
+//     <strong>Description:</strong> ${firstInfo.description}<br>
+//     <strong>Use:</strong> ${firstInfo.use}
+// ` : `<strong>Detected Object:</strong> ${first.class}<br>No info found.`;
+
+// commented -->
+
+
+<!-- //             if (predictions.length === 0) {
+//                 resultsDiv.innerHTML = '<div class="text-gray-400">No objects detected</div>';
+//                 return;
+//             }
+            
+//             predictions.forEach(prediction => {
+//                 const resultItem = document.createElement('div');
+//                 resultItem.className = 'bg-gray-700 p-2 rounded';
+//                 resultItem.innerHTML = `
+//                     <div class="flex justify-between">
+//                         <span class="font-bold">${prediction.class}</span>
+//                         <span>${Math.round(prediction.score * 100)}%</span>
+//                     </div>
+//                     <div class="text-xs text-gray-400">
+//                         Bounding box: [${prediction.bbox.map(Math.round).join(', ')}]
+//                     </div>
+//                 `;
+//                 resultsDiv.appendChild(resultItem);
+//             });
+//         }
+        
+//         // Draw bounding boxes
+//         function drawBoxes(predictions) {
+//             predictions.forEach(prediction => {
+//                 const [x, y, width, height] = prediction.bbox;
+                
+//                 // Draw box
+//                 ctx.strokeStyle = '#00FF00';
+//                 ctx.lineWidth = 2;
+//                 ctx.strokeRect(x, y, width, height);
+                
+//                 // Draw label background
+//                 ctx.fillStyle = '#00FF00';
+//                 const textWidth = ctx.measureText(prediction.class).width;
+//                 ctx.fillRect(x, y - 20, Math.max(textWidth + 10, width), 20);
+                
+//                 // Draw text
+//                 ctx.fillStyle = '#000000';
+//                 ctx.font = '16px Arial';
+//                 ctx.fillText(
+//                     `${prediction.class} ${Math.round(prediction.score * 100)}%`,
+//                     x + 5,
+//                     y - 5
+//                 );
+//             });
+//         }
+         -->
+<!-- //         // Continuous detection for webcam
+//         function startContinuousDetection() {
+//             if (isDetecting) return;
+            
+//             isDetecting = true;
+//             detectionInterval = setInterval(async () => {
+//                 await detectObjects();
+//             }, 1000); // Detect every second
+//         }
+        
+//         // Stop continuous detection
+//         function stopContinuousDetection() {
+//             isDetecting = false;
+//             if (detectionInterval) {
+//                 clearInterval(detectionInterval);
+//                 detectionInterval = null;
+//             }
+//             canvas.classList.add('hidden');
+//         }
+        
+//         // Event Listeners
+//         document.getElementById('webcamBtn').addEventListener('click', async () => {
+//             stopContinuousDetection();
+//             stopWebcam();
+//             await startWebcam();
+//         });
+        
+//         document.getElementById('uploadBtn').addEventListener('click', () => {
+//             fileInput.click();
+//         });
+        
+//         fileInput.addEventListener('change', (e) => {
+//             stopContinuousDetection();
+//             stopWebcam();
+            
+//             const file = e.target.files[0];
+//             if (!file) return;
+            
+//             const reader = new FileReader();
+//             reader.onload = (event) => {
+//                 imagePreview.src = event.target.result;
+//                 imagePreview.onload = () => {
+//                     imagePreview.classList.remove('hidden');
+//                     canvas.classList.add('hidden');
+//                 };
+//             };
+//             reader.readAsDataURL(file);
+//         });
+        
+//         document.getElementById('detectBtn').addEventListener('click', () => {
+//             if (!video.classList.contains('hidden')) {
+//                 startContinuousDetection();
+//             } else {
+//                 detectObjects();
+//             }
+//         });
+        
+//         document.getElementById('stopBtn').addEventListener('click', () => {
+//             stopContinuousDetection();
+//         });
+        
+//         // Initialize
+//         loadModel(); -->
+<!-- //     </script>
+//     <script src="demo.js"></script>
+// </body>
+// </html> --> -->
+
+
+
+<!-- second -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #videoContainer {
+            position: relative;
+            display: inline-block;
+        }
+        .detection-box {
+            position: absolute;
+            border: 2px solid #00FF00;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-4">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">Object Detection Scanner</h1>
+        
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg flex-1">
+                <div class="flex gap-4 mb-4">
+                    <button id="webcamBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex-1">
+                        Start Webcam
+                    </button>
+                    <button id="uploadBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex-1">
+                        Upload Image
+                    </button>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                </div>
+                
+                <div id="videoContainer" class="relative">
+                    <video id="video" width="640" height="480" autoplay playsinline class="hidden w-full border-2 border-gray-600 rounded"></video>
+                    <canvas id="canvas" width="640" height="480" class="hidden w-full border-2 border-gray-600 rounded"></canvas>
+                    <img id="imagePreview" class="hidden w-full border-2 border-gray-600 rounded">
+                </div>
+                
+                <div class="mt-4 flex gap-4">
+                    <button id="detectBtn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded flex-1">
+                        Detect Objects
+                    </button>
+                    <button id="stopBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex-1">
+                        Stop Detection
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg w-full md:w-80">
+                <h2 class="text-xl font-bold mb-4">Detection Results</h2>
+                <div id="results" class="space-y-2 max-h-96 overflow-y-auto"></div>
+                <div class="mt-4">
+                    <h3 class="font-bold mb-2">Model Information</h3>
+                    <div id="modelInfo" class="text-sm text-gray-300">
+                        Loading COCO-SSD model...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Main Application
+        document.addEventListener('DOMContentLoaded', function() {
+            const app = new ObjectDetectionApp();
+            app.init();
+        });
+
+        class ObjectDetectionApp {
+            constructor() {
+                // DOM Elements
+                this.video = document.getElementById('video');
+                this.canvas = document.getElementById('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.imagePreview = document.getElementById('imagePreview');
+                this.resultsDiv = document.getElementById('results');
+                this.modelInfoDiv = document.getElementById('modelInfo');
+                this.fileInput = document.getElementById('fileInput');
+                this.webcamBtn = document.getElementById('webcamBtn');
+                this.uploadBtn = document.getElementById('uploadBtn');
+                this.detectBtn = document.getElementById('detectBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.videoContainer = document.getElementById('videoContainer');
+
+                // State variables
+                this.model = null;
+                this.isDetecting = false;
+                this.detectionInterval = null;
+                this.stream = null;
+            }
+
+            async init() {
+                this.objectInfo = {
+                    "Helmet": {
+                        "description": "Military helmet for protection.",
+                        "use": "Worn for safety in battlefield conditions."
+                    },
+                    "Rifle": {
+                        "description": "Standard assault rifle.",
+                        "use": "Used in ground operations."
+                    },
+                    "Drone": {
+                        "description": "Surveillance drone.",
+                        "use": "Aerial monitoring and reconnaissance."
+                    },
+                    "Radio": {
+                        "description": "Military communication radio.",
+                        "use": "Used for secure communication."
+                    }
+                };
+                this.setupEventListeners();
+                await this.loadModel();
+                this.disableDetectionControls(false);
+            }
+
+            async loadModel() {
+                try {
+                    this.showLoadingMessage("Loading COCO-SSD model...");
+                    this.model = await cocoSsd.load();
+                    this.modelInfoDiv.innerHTML = `
+                        <strong>Model Name:</strong> ${this.model.modelName}<br>
+                        <strong>Status:</strong> <span class="text-green-300">Loaded successfully</span><br>
+                        <strong>Classes:</strong> 80 common objects<br>
+                        <strong>Type:</strong> Object detection
+                    `;
+                    console.log("Model loaded successfully");
+                    this.enableDetectionControls();
+                } catch (err) {
+                    this.showErrorMessage("Failed to load model");
+                    console.error("Model loading error:", err);
+                }
+            }
+
+            async startWebcam() {
+                try {
+                    this.stopDetection();
+                    
+                    this.stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { 
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 },
+                            facingMode: 'environment'
+                        },
+                        audio: false
+                    });
+                    
+                    this.video.srcObject = this.stream;
+                    this.showElement(this.video);
+                    this.hideElement(this.imagePreview);
+                    this.hideElement(this.canvas);
+                    
+                    this.video.onloadeddata = () => {
+                        this.video.play();
+                        this.resizeCanvasToVideo();
+                    };
+                    
+                } catch (err) {
+                    console.error("Webcam error:", err);
+                    this.showErrorMessage("Could not access the webcam. Please check permissions.");
+                }
+            }
+
+            stopWebcam() {
+                if (this.stream) {
+                    this.stream.getTracks().forEach(track => track.stop());
+                    this.stream = null;
+                }
+                this.hideElement(this.video);
+            }
+
+            async detectObjects() {
+                if (!this.model) {
+                    this.showErrorMessage("Model is not loaded");
+                    return;
+                }
+                
+                try {
+                    this.isDetecting = true;
+                    this.clearResults();
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    
+                    const imageElement = this.video.classList.contains('hidden') ? this.imagePreview : this.video;
+                    this.resizeCanvasToMediaElement(imageElement);
+                    
+                    this.ctx.drawImage(imageElement, 0, 0, this.canvas.width, this.canvas.height);
+                    this.showElement(this.canvas);
+                    
+                    const predictions = await this.model.detect(this.canvas);
+                    this.displayResults(predictions);
+                    this.drawBoxes(predictions);
+                } catch (err) {
+                    console.error("Detection error:", err);
+                    this.showErrorMessage("Error during object detection");
+                } finally {
+                    this.isDetecting = false;
+                }
+            }
+
+            startContinuousDetection() {
+                if (this.isDetecting) return;
+                
+                this.isDetecting = true;
+                this.detectionInterval = setInterval(async () => {
+                    await this.detectObjects();
+                }, 1000);
+            }
+
+            stopDetection() {
+                this.isDetecting = false;
+                if (this.detectionInterval) {
+                    clearInterval(this.detectionInterval);
+                    this.detectionInterval = null;
+                }
+                this.hideElement(this.canvas);
+            }
+
+            displayResults(predictions) {
+                this.resultsDiv.innerHTML = '';
+                
+                if (predictions.length === 0) {
+                    this.resultsDiv.innerHTML = '<div class="text-gray-400">No objects detected</div>';
+                    this.modelInfoDiv.innerHTML = 'No object info available';
+                    return;
+                }
+                
+                predictions.forEach(prediction => {
+                    const confidence = Math.round(prediction.score * 100);
+                    const bbox = prediction.bbox.map(Math.round).join(', ');
+                    const info = this.objectInfo[prediction.class] || {};
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'bg-gray-700 p-2 rounded mb-2';
+                    resultItem.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold">${prediction.class}</span>
+                            <span class="text-blue-300">${confidence}%</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            Coordinates: [${bbox}]
+                        </div>
+                        ${info.description ? `
+                        <div class="mt-2 text-sm text-gray-300">
+                            <strong>Description:</strong> ${info.description}<br>
+                            <strong>Use:</strong> ${info.use || 'Not specified'}
+                        </div>` : ''}
+                        <div class="w-full bg-gray-600 rounded-full h-1.5 mt-1">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${confidence}%"></div>
+                        </div>
+                    `;
+                    this.resultsDiv.appendChild(resultItem);
+                });
+
+                // Show first object's details in model info panel
+                const firstPrediction = predictions[0];
+                const firstInfo = this.objectInfo[firstPrediction.class] || {};
+                this.modelInfoDiv.innerHTML = `
+                    <strong>Detected Object:</strong> ${firstPrediction.class}<br>
+                    <strong>Confidence:</strong> ${Math.round(firstPrediction.score * 100)}%<br>
+                    ${firstInfo.description ? `
+                    <strong>Description:</strong> ${firstInfo.description}<br>
+                    <strong>Use:</strong> ${firstInfo.use || 'Not specified'}
+                    ` : 'No additional information available'}
+                `;
+            }
+
+            drawBoxes(predictions) {
+                predictions.forEach(prediction => {
+                    const [x, y, width, height] = prediction.bbox;
+                    const confidence = Math.round(prediction.score * 100);
+                    const label = `${prediction.class} ${confidence}%`;
+                    
+                    // Draw box
+                    this.ctx.strokeStyle = '#00FF00';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.strokeRect(x, y, width, height);
+                    
+                    // Draw label background
+                    this.ctx.fillStyle = '#00FF00';
+                    const textWidth = this.ctx.measureText(label).width;
+                    this.ctx.fillRect(x, y - 20, Math.max(textWidth + 10, width), 20);
+                    
+                    // Draw text
+                    this.ctx.fillStyle = '#000000';
+                    this.ctx.font = '14px Arial';
+                    this.ctx.fillText(label, x + 5, y - 5);
+                });
+            }
+
+            resizeCanvasToVideo() {
+                this.canvas.width = this.video.videoWidth;
+                this.canvas.height = this.video.videoHeight;
+            }
+
+            resizeCanvasToMediaElement(element) {
+                this.canvas.width = element.width || element.videoWidth;
+                this.canvas.height = element.height || element.videoHeight;
+            }
+
+            setupEventListeners() {
+                this.webcamBtn.addEventListener('click', () => {
+                    this.startWebcam();
+                    this.detectBtn.disabled = false;
+                    this.stopBtn.disabled = false;
+                });
+
+                this.uploadBtn.addEventListener('click', () => {
+                    this.fileInput.click();
+                });
+
+                this.fileInput.addEventListener('change', (e) => {
+                    this.stopDetection();
+                    this.stopWebcam();
+                    
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.imagePreview.src = event.target.result;
+                        this.imagePreview.onload = () => {
+                            this.showElement(this.imagePreview);
+                            this.hideElement(this.canvas);
+                            this.detectBtn.disabled = false;
+                            this.stopBtn.disabled = false;
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                this.detectBtn.addEventListener('click', () => {
+                    if (!this.video.classList.contains('hidden')) {
+                        this.startContinuousDetection();
+                    } else {
+                        this.detectObjects();
+                    }
+                });
+
+                this.stopBtn.addEventListener('click', () => {
+                    this.stopDetection();
+                });
+            }
+
+            showElement(element) {
+                element.classList.remove('hidden');
+            }
+
+            hideElement(element) {
+                element.classList.add('hidden');
+            }
+
+            clearResults() {
+                this.resultsDiv.innerHTML = '';
+            }
+
+            showLoadingMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-yellow-300';
+            }
+
+            showSuccessMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-green-300';
+            }
+
+            showErrorMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-red-300';
+            }
+
+            enableDetectionControls() {
+                this.webcamBtn.disabled = false;
+                this.uploadBtn.disabled = false;
+            }
+
+            disableDetectionControls(disable = true) {
+                this.webcamBtn.disabled = disable;
+                this.uploadBtn.disabled = disable;
+                this.detectBtn.disabled = disable;
+                this.stopBtn.disabled = disable;
+            }
+        }
+    </script>
+
+    <script src="demo.js"></script>
+</body>
+</html> -->
+
+
+<!-- third -->
+
+
+
+<!-- These changes will:
+1. Add more detailed properties to each object type
+2. Display all available properties in both the results list and model info panel
+3. Show quantity and price information
+4. Maintain conditional rendering for properties that may not exist for all objects
+
+The additional details will appear in a structured format below each detected object's basic information.Here is the updated HTML content after applying above edits: -->
+<!-- 
+```html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #videoContainer {
+            position: relative;
+            display: inline-block;
+        }
+        .detection-box {
+            position: absolute;
+            border: 2px solid #00FF00;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-4">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">Object Detection Scanner</h1>
+        
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg flex-1">
+                <div class="flex gap-4 mb-4">
+                    <button id="webcamBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex-1">
+                        Start Webcam
+                    </button>
+                    <button id="uploadBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded flex-1">
+                        Upload Image
+                    </button>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                </div>
+                
+                <div id="videoContainer" class="relative">
+                    <video id="video" width="640" height="480" autoplay playsinline class="hidden w-full border-2 border-gray-600 rounded"></video>
+                    <canvas id="canvas" width="640" height="480" class="hidden w-full border-2 border-gray-600 rounded"></canvas>
+                    <img id="imagePreview" class="hidden w-full border-2 border-gray-600 rounded">
+                </div>
+                
+                <div class="mt-4 flex gap-4">
+                    <button id="detectBtn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded flex-1">
+                        Detect Objects
+                    </button>
+                    <button id="stopBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded flex-1">
+                        Stop Detection
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg w-full md:w-80">
+                <h2 class="text-xl font-bold mb-4">Detection Results</h2>
+                <div id="results" class="space-y-2 max-h-96 overflow-y-auto"></div>
+                <div class="mt-4">
+                    <h3 class="font-bold mb-2">Model Information</h3>
+                    <div id="modelInfo" class="text-sm text-gray-300">
+                        Loading COCO-SSD model...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Main Application
+        document.addEventListener('DOMContentLoaded', function() {
+            const app = new ObjectDetectionApp();
+            app.init();
+        });
+
+        class ObjectDetectionApp {
+            constructor() {
+                // DOM Elements
+                this.video = document.getElementById('video');
+                this.canvas = document.getElementById('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.imagePreview = document.getElementById('imagePreview');
+                this.resultsDiv = document.getElementById('results');
+                this.modelInfoDiv = document.getElementById('modelInfo');
+                this.fileInput = document.getElementById('fileInput');
+                this.webcamBtn = document.getElementById('webcamBtn');
+                this.uploadBtn = document.getElementById('uploadBtn');
+                this.detectBtn = document.getElementById('detectBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.videoContainer = document.getElementById('videoContainer');
+
+                // State variables
+                this.model = null;
+                this.isDetecting = false;
+                this.detectionInterval = null;
+                this.stream = null;
+            }
+
+            async init() {
+                const objectInfo = {
+  "1-2 Rosca Fina": {
+    description: "A fine-threaded screw typically used in precision assemblies.",
+    use: "Electronics or small mechanical parts."
+  },
+  "1-4 Rosca Fina": {
+    description: "A finer-threaded version of the quarter-inch screw.",
+    use: "Used in machinery with delicate tolerances."
+  },
+  "M16x2": {
+    description: "Metric bolt with 16mm diameter and 2mm thread pitch.",
+    use: "Heavy industrial applications and structural fastening."
+  },
+  "M4x08": {
+    description: "Metric screw of 4mm diameter and 8mm length.",
+    use: "Used in electronics, casings, and panels."
+  },
+  "M5x08": {
+    description: "Metric screw 5mm wide and 8mm long.",
+    use: "Common for mechanical joints and enclosures."
+  }
+};
+
+                
+
+                this.setupEventListeners();
+                // await this.loadModel();
+                this.disableDetectionControls(false);
+            }
+
+            // async loadModel() {
+            //     try {
+            //         this.showLoadingMessage("Loading COCO-SSD model...");
+            //         this.model = await cocoSsd.load();
+            //         this.modelInfoDiv.innerHTML = `
+            //             <strong>Model Name:</strong> ${this.model.modelName}<br>
+            //             <strong>Status:</strong> <span class="text-green-300">Loaded successfully</span><br>
+            //             <strong>Classes:</strong> 80 common objects<br>
+            //             <strong>Type:</strong> Object detection
+            //         `;
+            //         console.log("Model loaded successfully");
+            //         this.enableDetectionControls();
+            //     } catch (err) {
+            //         this.showErrorMessage("Failed to load model");
+            //         console.error("Model loading error:", err);
+            //     }
+            // }
+
+            async startWebcam() {
+                try {
+                    this.stopDetection();
+                    
+                    this.stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { 
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 },
+                            facingMode: 'environment'
+                        },
+                        audio: false
+                    });
+                    
+                    this.video.srcObject = this.stream;
+                    this.showElement(this.video);
+                    this.hideElement(this.imagePreview);
+                    this.hideElement(this.canvas);
+                    
+                    this.video.onloadeddata = () => {
+                        this.video.play();
+                        this.resizeCanvasToVideo();
+                    };
+                    
+                } catch (err) {
+                    console.error("Webcam error:", err);
+                    this.showErrorMessage("Could not access the webcam. Please check permissions.");
+                }
+            }
+
+            stopWebcam() {
+                if (this.stream) {
+                    this.stream.getTracks().forEach(track => track.stop());
+                    this.stream = null;
+                }
+                this.hideElement(this.video);
+            }
+
+            async detectObjects() {
+                if (!this.model) {
+                    this.showErrorMessage("Model is not loaded");
+                    return;
+                }
+                
+                try {
+                    this.isDetecting = true;
+                    this.clearResults();
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    
+                    const imageElement = this.video.classList.contains('hidden') ? this.imagePreview : this.video;
+                    this.resizeCanvasToMediaElement(imageElement);
+                    
+                    this.ctx.drawImage(imageElement, 0, 0, this.canvas.width, this.canvas.height);
+                    this.showElement(this.canvas);
+                    
+                    const predictions = await this.model.detect(this.canvas);
+                    this.displayResults(predictions);
+                    this.drawBoxes(predictions);
+                } catch (err) {
+                    console.error("Detection error:", err);
+                    this.showErrorMessage("Error during object detection");
+                } finally {
+                    this.isDetecting = false;
+                }
+            }
+
+            startContinuousDetection() {
+                if (this.isDetecting) return;
+                
+                this.isDetecting = true;
+                this.detectionInterval = setInterval(async () => {
+                    await this.detectObjects();
+                }, 1000);
+            }
+
+            stopDetection() {
+                this.isDetecting = false;
+                if (this.detectionInterval) {
+                    clearInterval(this.detectionInterval);
+                    this.detectionInterval = null;
+                }
+                this.hideElement(this.canvas);
+            }
+
+            displayResults(predictions) {
+                this.resultsDiv.innerHTML = '';
+                
+                if (predictions.length === 0) {
+                    this.resultsDiv.innerHTML = '<div class="text-gray-400">No objects detected</div>';
+                    this.modelInfoDiv.innerHTML = 'No object info available';
+                    return;
+                }
+                
+                predictions.forEach(prediction => {
+                    const confidence = Math.round(prediction.score * 100);
+                    const bbox = prediction.bbox.map(Math.round).join(', ');
+                    const info = this.objectInfo[prediction.class] || {};
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'bg-gray-700 p-2 rounded mb-2';
+                    resultItem.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold">${prediction.class}</span>
+                            <span class="text-blue-300">${confidence}%</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            Coordinates: [${bbox}]
+                        </div>
+                        ${info.description ? `
+                        <div class="mt-2 text-sm text-gray-300">
+                            <strong>Description:</strong> ${info.description}<br>
+                            <strong>Use:</strong> ${info.use || 'Not specified'}<br>
+                            ${info.material ? `<strong>Material:</strong> ${info.material}<br>` : ''}
+                            ${info.weight ? `<strong>Weight:</strong> ${info.weight}<br>` : ''}
+                            ${info.caliber ? `<strong>Caliber:</strong> ${info.caliber}<br>` : ''}
+                            ${info.range ? `<strong>Range:</strong> ${info.range}<br>` : ''}
+                            ${info.battery ? `<strong>Battery:</strong> ${info.battery}<br>` : ''}
+                            <strong>Quantity:</strong> ${info.quantity || 0}<br>
+                            <strong>Price:</strong> ${info.price || 'Not specified'}
+                        </div>` : ''}
+                        <div class="w-full bg-gray-600 rounded-full h-1.5 mt-1">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${confidence}%"></div>
+                        </div>
+                    `;
+                    this.resultsDiv.appendChild(resultItem);
+                });
+
+                // Show first object's details in model info panel
+                const firstPrediction = predictions[0];
+                const firstInfo = this.objectInfo[firstPrediction.class] || {};
+                this.modelInfoDiv.innerHTML = `
+                    <strong>Detected Object:</strong> ${firstPrediction.class}<br>
+                    <strong>Confidence:</strong> ${Math.round(firstPrediction.score * 100)}%<br>
+                    ${firstInfo.description ? `
+                    <strong>Description:</strong> ${firstInfo.description}<br>
+                    <strong>Use:</strong> ${firstInfo.use || 'Not specified'}<br>
+                    ${firstInfo.material ? `<strong>Material:</strong> ${firstInfo.material}<br>` : ''}
+                    ${firstInfo.weight ? `<strong>Weight:</strong> ${firstInfo.weight}<br>` : ''}
+                    ${firstInfo.caliber ? `<strong>Caliber:</strong> ${firstInfo.caliber}<br>` : ''}
+                    ${firstInfo.range ? `<strong>Range:</strong> ${firstInfo.range}<br>` : ''}
+                    ${firstInfo.battery ? `<strong>Battery:</strong> ${firstInfo.battery}<br>` : ''}
+                    <strong>Quantity:</strong> ${firstInfo.quantity || 0}<br>
+                    <strong>Price:</strong> ${firstInfo.price || 'Not specified'}
+                    ` : 'No additional information available'}
+                `;
+            }
+
+            drawBoxes(predictions) {
+                predictions.forEach(prediction => {
+                    const [x, y, width, height] = prediction.bbox;
+                    const confidence = Math.round(prediction.score * 100);
+                    const label = `${prediction.class} ${confidence}%`;
+                    
+                    // Draw box
+                    this.ctx.strokeStyle = '#00FF00';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.strokeRect(x, y, width, height);
+                    
+                    // Draw label background
+                    this.ctx.fillStyle = '#00FF00';
+                    const textWidth = this.ctx.measureText(label).width;
+                    this.ctx.fillRect(x, y - 20, Math.max(textWidth + 10, width), 20);
+                    
+                    // Draw text
+                    this.ctx.fillStyle = '#000000';
+                    this.ctx.font = '14px Arial';
+                    this.ctx.fillText(label, x + 5, y - 5);
+                });
+            }
+
+            resizeCanvasToVideo() {
+                this.canvas.width = this.video.videoWidth;
+                this.canvas.height = this.video.videoHeight;
+            }
+
+            resizeCanvasToMediaElement(element) {
+                this.canvas.width = element.width || element.videoWidth;
+                this.canvas.height = element.height || element.videoHeight;
+            }
+
+            setupEventListeners() {
+                this.webcamBtn.addEventListener('click', () => {
+                    this.startWebcam();
+                    this.detectBtn.disabled = false;
+                    this.stopBtn.disabled = false;
+                });
+
+                this.uploadBtn.addEventListener('click', () => {
+                    this.fileInput.click();
+                });
+
+                this.fileInput.addEventListener('change', (e) => {
+                    this.stopDetection();
+                    this.stopWebcam();
+                    
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.imagePreview.src = event.target.result;
+                        this.imagePreview.onload = () => {
+                            this.showElement(this.imagePreview);
+                            this.hideElement(this.canvas);
+                            this.detectBtn.disabled = false;
+                            this.stopBtn.disabled = false;
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                this.detectBtn.addEventListener('click', () => {
+                    if (!this.video.classList.contains('hidden')) {
+                        this.startContinuousDetection();
+                    } else {
+                        this.detectObjects();
+                    }
+                });
+
+                this.stopBtn.addEventListener('click', () => {
+                    this.stopDetection();
+                });
+            }
+
+            showElement(element) {
+                element.classList.remove('hidden');
+            }
+
+            hideElement(element) {
+                element.classList.add('hidden');
+            }
+
+            clearResults() {
+                this.resultsDiv.innerHTML = '';
+            }
+
+            showLoadingMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-yellow-300';
+            }
+
+            showSuccessMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-green-300';
+            }
+
+            showErrorMessage(message) {
+                this.modelInfoDiv.textContent = message;
+                this.modelInfoDiv.className = 'text-sm text-red-300';
+            }
+
+            enableDetectionControls() {
+                this.webcamBtn.disabled = false;
+                this.uploadBtn.disabled = false;
+            }
+
+            disableDetectionControls(disable = true) {
+                this.webcamBtn.disabled = disable;
+                this.uploadBtn.disabled = disable;
+                this.detectBtn.disabled = disable;
+                this.stopBtn.disabled = disable;
+            }
+        }
+    </script>
+     <script src="/static/demo.js"></script>
+</body>
+</html>
+
+
+
+

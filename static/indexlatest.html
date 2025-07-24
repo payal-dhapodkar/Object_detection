@@ -1,0 +1,427 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>YOLOv8 Detection UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-6">Object Detection</h1> -->
+
+    <!-- <button id="startWebcamBtn" class="bg-blue-600 px-4 py-2 rounded text-white mr-2">Start Webcam</button>
+    <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button> -->
+
+    <!-- <div class="flex gap-4 mb-4">
+    <button id="startWebcamBtn" class="bg-blue-600 px-4 py-2 rounded text-white">Start Webcam</button>
+    <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button>
+    </div>
+     -->
+    <!-- <video id="webcam" autoplay muted playsinline class="hidden border border-gray-500 mb-4 w-full max-h-[480px] rounded"></video> -->
+
+    <!-- <input type="file" id="uploadBtn" accept="image/*" class="mb-4 block w-full text-black" />
+    <canvas id="canvas" class="w-full border border-gray-600 mb-6"></canvas>
+    <video id="webcam" autoplay muted playsinline class="hidden border border-gray-500 mb-4 w-full max-h-[480px] rounded"></video> -->
+
+    <!-- <button id="startWebcamBtn" class="bg-blue-600 px-4 py-2 rounded text-white mr-2">Start Webcam</button>
+    <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button> -->
+
+    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h2 class="text-xl font-bold mb-2">Detection Results</h2>
+        <div id="results" class="space-y-2 text-sm"></div>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold mb-2">Object Info</h2>
+        <div id="modelInfo" class="text-sm text-gray-300"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/demo.js"></script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Inventory Detection - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md">
+    <div id="auth-section" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 id="form-title" class="text-2xl font-bold mb-4 text-center">Login</h2>
+      <form id="auth-form" class="space-y-4">
+        <input id="email" type="email" required placeholder="Email" class="w-full p-2 rounded bg-gray-700 text-white">
+        <input id="password" type="password" required placeholder="Password" class="w-full p-2 rounded bg-gray-700 text-white">
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded">Login</button>
+        <p class="text-sm text-center mt-2">Don't have an account? <a id="toggle-auth" href="#" class="text-blue-400 hover:underline">Register here</a></p>
+      </form>
+    </div>
+
+    <div id="main-app" class="hidden mt-6 bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-center">Object Detection</h2>
+      <div class="mb-4">
+        <input type="file" id="uploadBtn" accept="image/*" class="block w-full text-black mb-2">
+        <div class="flex gap-2">
+          <button id="startWebcamBtn" class="bg-green-600 px-4 py-2 rounded text-white">Start Webcam</button>
+          <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button>
+        </div>
+      </div>
+      <video id="webcam" autoplay muted playsinline class="hidden w-full rounded mb-4 max-h-[300px] border"></video>
+      <canvas id="canvas" class="w-full border border-gray-600 mb-4"></canvas>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Detection Results</h3>
+          <div id="results" class="space-y-2 text-sm"></div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Object Info</h3>
+          <div id="modelInfo" class="text-sm text-gray-300"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authSection = document.getElementById("auth-section");
+    const authForm = document.getElementById("auth-form");
+    const toggleAuth = document.getElementById("toggle-auth");
+    const formTitle = document.getElementById("form-title");
+    const mainApp = document.getElementById("main-app");
+
+    let isRegister = false;
+
+    toggleAuth.addEventListener("click", (e) => {
+      e.preventDefault();
+      isRegister = !isRegister;
+      formTitle.textContent = isRegister ? "Register" : "Login";
+      toggleAuth.textContent = isRegister ? "Already have an account? Login here" : "Don't have an account? Register here";
+    });
+
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      console.log(isRegister ? "Registering:" : "Logging in:", email);
+      // Simulate login/register
+      authSection.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+    });
+  </script>
+  <script src="/static/demo.js"></script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Inventory Detection - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('/static/army.webp');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .bg-glass {
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md">
+    <div id="auth-section" class="bg-glass p-6 rounded-lg shadow-2xl">
+      <h2 id="form-title" class="text-3xl font-extrabold mb-4 text-center text-teal-300">Login</h2>
+      <form id="auth-form" class="space-y-4">
+        <input id="email" type="email" required placeholder="Email" class="w-full p-2 rounded bg-gray-900 text-white border border-gray-600">
+        <input id="password" type="password" required placeholder="Password" class="w-full p-2 rounded bg-gray-900 text-white border border-gray-600">
+        <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 p-2 rounded font-semibold text-white">Login</button>
+        <p class="text-sm text-center mt-2">Don't have an account? <a id="toggle-auth" href="#" class="text-yellow-400 hover:underline">Register here</a></p>
+      </form>
+    </div>
+
+    <div id="main-app" class="hidden mt-6 bg-glass p-6 rounded-lg shadow-2xl">
+      <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Object Detection</h2>
+      <div class="mb-4">
+        <input type="file" id="uploadBtn" accept="image/*" class="block w-full text-black mb-2 rounded">
+        <div class="flex gap-2">
+          <button id="startWebcamBtn" class="bg-green-600 px-4 py-2 rounded text-white">Start Webcam</button>
+          <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button>
+        </div>
+      </div>
+      <video id="webcam" autoplay muted playsinline class="hidden w-full rounded mb-4 max-h-[300px] border"></video>
+      <canvas id="canvas" class="w-full border border-gray-500 mb-4 rounded"></canvas>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-xl font-semibold mb-2 text-teal-400">Detection Results</h3>
+          <div id="results" class="space-y-2 text-sm"></div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2 text-yellow-400">Object Info</h3>
+          <div id="modelInfo" class="text-sm text-gray-200"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authSection = document.getElementById("auth-section");
+    const authForm = document.getElementById("auth-form");
+    const toggleAuth = document.getElementById("toggle-auth");
+    const formTitle = document.getElementById("form-title");
+    const mainApp = document.getElementById("main-app");
+
+    let isRegister = false;
+
+    toggleAuth.addEventListener("click", (e) => {
+      e.preventDefault();
+      isRegister = !isRegister;
+      formTitle.textContent = isRegister ? "Register" : "Login";
+      toggleAuth.textContent = isRegister ? "Already have an account? Login here" : "Don't have an account? Register here";
+    });
+
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      console.log(isRegister ? "Registering:" : "Logging in:", email);
+      authSection.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+    });
+  </script>
+  <script src="/static/demo.js"></script>
+</body>
+</html>
+ -->
+
+
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Inventory Detection - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('/static/army.webp');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .bg-glass {
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md">
+    <div id="auth-section" class="bg-glass p-6 rounded-lg shadow-2xl">
+      <h2 id="form-title" class="text-3xl font-extrabold mb-4 text-center text-teal-300">Login</h2>
+      <form id="auth-form" class="space-y-4">
+        <input id="email" type="email" required placeholder="Email" class="w-full p-2 rounded bg-gray-900 text-white border border-gray-600">
+        <input id="password" type="password" required placeholder="Password" class="w-full p-2 rounded bg-gray-900 text-white border border-gray-600">
+        <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 p-2 rounded font-semibold text-white">Login</button>
+        <p class="text-sm text-center mt-2">Don't have an account? <a id="toggle-auth" href="#" class="text-yellow-400 hover:underline">Register here</a></p>
+      </form>
+    </div>
+
+    <div id="main-app" class="hidden mt-6 bg-glass p-6 rounded-lg shadow-2xl">
+      <h2 class="text-3xl font-bold mb-6 text-center text-yellow-300">Object Detection</h2>
+      <div class="mb-4">
+        <input type="file" id="uploadBtn" accept="image/*" class="block w-full text-black mb-2 rounded">
+        <div class="flex gap-2">
+          <button id="startWebcamBtn" class="bg-green-600 px-4 py-2 rounded text-white">Start Webcam</button>
+          <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded text-white">Stop Webcam</button>
+        </div>
+      </div>
+      <video id="webcam" autoplay muted playsinline class="hidden w-full rounded mb-4 max-h-[300px] border"></video>
+      <canvas id="canvas" class="w-full border border-gray-500 mb-4 rounded"></canvas>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-xl font-semibold mb-2 text-teal-400">Detection Results</h3>
+          <div id="results" class="space-y-2 text-sm"></div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2 text-yellow-400">Object Info</h3>
+          <div id="modelInfo" class="text-sm text-gray-200"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authSection = document.getElementById("auth-section");
+    const authForm = document.getElementById("auth-form");
+    const toggleAuth = document.getElementById("toggle-auth");
+    const formTitle = document.getElementById("form-title");
+    const mainApp = document.getElementById("main-app");
+
+    let isRegister = false;
+
+    toggleAuth.addEventListener("click", (e) => {
+      e.preventDefault();
+      isRegister = !isRegister;
+      formTitle.textContent = isRegister ? "Register" : "Login";
+      toggleAuth.textContent = isRegister ? "Already have an account? Login here" : "Don't have an account? Register here";
+    });
+
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      console.log(isRegister ? "Registering:" : "Logging in:", email);
+      authSection.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+    });
+  </script>
+  <script src="/static/demo.js"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Inventory Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-image: url("/static/army.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(4px);
+    }
+    .glass {
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+    }
+    .custom-btn {
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .custom-btn:hover {
+      transform: translateY(-2px);
+      background-color: #2563eb;
+    }
+    .custom-btn-green:hover {
+      background-color: #15803d;
+    }
+    .custom-btn-red:hover {
+      background-color: #b91c1c;
+    }
+  </style>
+</head>
+<body class="h-full w-full text-white">
+
+  <!-- Login/Register Section -->
+  <div id="authContainer" class="glass absolute inset-0 flex flex-col items-center justify-center">
+    <div class="p-8 rounded-xl w-[350px] text-center">
+      <h2 class="text-2xl font-bold mb-4" id="formTitle">Login</h2>
+      <input type="text" id="username" placeholder="Username" class="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-600" />
+      <input type="password" id="password" placeholder="Password" class="w-full p-2 mb-3 rounded bg-gray-800 border border-gray-600" />
+      <button id="authBtn" class="bg-green-600 w-full p-2 rounded hover:bg-green-700">🔓Login</button>
+      <p class="mt-4 text-sm">
+        <span id="toggleText">Don't have an account?</span>
+        <button id="toggleBtn" class="text-blue-400 hover:underline">Register</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- Home Detection Section -->
+  <div id="appContainer" class="hidden absolute inset-0 flex flex-col">
+    <div class="flex-1 bg-black bg-opacity-80 p-6 overflow-auto">
+      <h1 class="text-3xl font-bold text-center mb-6">AI Object Detection</h1>
+
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left: Camera/Upload Area -->
+        <div class="flex-1">
+          <div class="mb-4 flex gap-4">
+            
+             <!-- <input type="file" id="uploadBtn" accept="image/*" class="block w-full bg-gray-700 text-white p-2 rounded" /> -->
+             <!-- <button id="uploadBtn" class="bg-blue-600 px-4 py-2 rounded">📷 Start Webcam</button> -->
+              <input type="file" id="uploadBtn" accept="image/*" class="hidden" />
+              <label for="uploadBtn" class="inline-block cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded:scale-105 transition transform duration-200">
+📁 Choose Image
+</label>
+
+<img id="imagePreview" class="mt-4 border border-gray-500 rounded hidden" style="max-width: 100%; height: auto;" />
+
+
+<!-- <canvas id="canvas" class="border border-gray-400"></canvas> -->
+
+            <!-- <input type="file" id="uploadBtn" accept="image/*" class="block w-full bg-gray-700 text-white p-2 rounded" /> -->
+            <!-- <button id="uploadBtn" class="bg-purple-600 px-4 py-2 custom-btn hover:bg-purple-700 text-white rounded">
+              <input type="Choose Image" id="uploadBtn" accept="image/*" class="block w-full bg-gray-700 text-white p-2 rounded" />
+               📁 Choose Image
+            </button> -->
+            <button id="startWebcamBtn" class="bg-blue-600 px-4 py-2 rounded">📷 Start Webcam</button>
+            <button id="stopWebcamBtn" class="bg-red-600 px-4 py-2 rounded">🛑 Stop</button>
+          </div>
+          <video id="webcam" autoplay muted playsinline class="hidden border border-gray-500 rounded mb-4 w-full max-h-[400px]"></video>
+          <canvas id="canvas" class="w-full border border-gray-500 rounded"></canvas>
+        </div>
+
+        <!-- Right: Results Panel -->
+        <div class="w-full lg:w-1/3 bg-gray-800 p-4 rounded shadow">
+          <h2 class="text-xl font-bold mb-4">Detection Results</h2>
+          <div id="results" class="text-sm max-h-[400px] overflow-y-auto"></div>
+          <h3 class="font-bold mt-6 mb-1">Object Info</h3>
+          <div id="modelInfo" class="text-sm text-gray-300"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Script -->
+  <script>
+    const authContainer = document.getElementById("authContainer");
+    const appContainer = document.getElementById("appContainer");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const toggleText = document.getElementById("toggleText");
+    const formTitle = document.getElementById("formTitle");
+    const authBtn = document.getElementById("authBtn");
+
+    let isLogin = true;
+
+    toggleBtn.onclick = () => {
+      isLogin = !isLogin;
+      formTitle.textContent = isLogin ? "Login" : "Register";
+      // authBtn.textContent = isLogin ? "Login" : "Register";
+      authBtn.textContent = isLogin ? "🔓 Login" : "📝 Register";
+      toggleText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+      toggleBtn.textContent = isLogin ? "Register" : "Login";
+    };
+
+    authBtn.onclick = () => {
+      // Simulate login success (can connect to FastAPI /login later)
+      authContainer.classList.add("hidden");
+      appContainer.classList.remove("hidden");
+    };
+  </script>
+
+  <!-- Detection logic -->
+  <script src="/static/demo.js"></script>
+</body>
+</html>
